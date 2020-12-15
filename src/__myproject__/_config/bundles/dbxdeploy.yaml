@@ -6,6 +6,9 @@ parameters:
         patterns:
           - 'app/install_master_package.py'
           - 'solutions/**/*.py'
+          - 'bronze_covid/**/*.py'
+          - 'silver_covid/**/*.py'
+          - 'gold_covid/**/*.py'
     target:
       workspaceBaseDir: '%databricks.workspaceBaseDir%'
     databricks:
