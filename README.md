@@ -74,3 +74,17 @@ $ ca
 
 1. ```./pylint.sh``` - checks coding standards
 1. ```./run_tests.sh``` - runs tests
+
+
+## 6. Typical Errors
+
+#### Wrong ENV variables defined on a Databricks cluster
+**Error message:** 
+```
+FileNotFoundError: [Errno 2] No such file or directory: '/databricks/driver/pyproject.toml'
+```
+**Solution:** Missing Env variable `CONTAINER_INIT_FUNCTION`. Make sure to set ENV variables to a cluster
+```
+APP_ENV=dev
+CONTAINER_INIT_FUNCTION=[ROOT_MODULE].ContainerInit.initContainer
+```
