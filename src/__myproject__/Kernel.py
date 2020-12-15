@@ -5,8 +5,11 @@ from pyfonybundles.Bundle import Bundle
 from pyfony.kernel.BaseKernel import BaseKernel
 from loggerbundle.LoggerBundle import LoggerBundle
 from consolebundle.ConsoleBundle import ConsoleBundle
+from datalakebundle.DataLakeBundle import DataLakeBundle
 
 class Kernel(BaseKernel):
+
+    # _allowedEnvironments = ['dev', 'aut', 'sx', 'prod'] # Uncomment to change default Bricksflow env dev, test, prod.
 
     def _registerBundles(self) -> List[Bundle]:
         bundles = []
@@ -22,6 +25,7 @@ class Kernel(BaseKernel):
             ConsoleBundle(),
             LoggerBundle(),
             DatabricksBundle.autodetect(),
+            DataLakeBundle(),
         ]
 
         return bundles

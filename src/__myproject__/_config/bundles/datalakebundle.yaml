@@ -1,0 +1,16 @@
+# overrides default bundle settings defined in site-packages/datalakebundle/_config/config.yaml
+parameters:
+  datalakebundle:
+    table:
+      nameTemplate: '%kernel.environment%_{identifier}'
+      # Examplpe:
+      # identifier = `dataoneoff_covid.parsed_mask_usage`
+      # dbIdentifier = `dataoneoff_covid`
+      # tableIdentifier = `parsed_mask_usage`
+      defaults:
+        basePath: '%datalake.basePath%' # from config.yaml
+        dbType: !expr 'dbIdentifier[:dbIdentifier.find("_")]' # dataoneoff
+        dbSource: !expr 'dbIdentifier[dbIdentifier.find("_") + 1:]' # covid
+        tableLayer: !expr 'tableIdentifier[:tableIdentifier.find("_")]' # parsed
+        tableName: !expr 'tableIdentifier[tableIdentifier.find("_") + 1:]' # mask_usage
+        targetPath: !expr 'basePath + dbType + "/" + dbSource + "/" + tableLayer + "/" + tableName + ".delta"' #'/dev/dataoneoff/covid/cleansed/cleansed_mask_usage.delta'
