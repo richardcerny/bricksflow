@@ -36,7 +36,9 @@
 
 # MAGIC %sql
 # MAGIC -- this cell is only for demo purposes
-# MAGIC create database if not exists dev_bronze_covid
+# MAGIC create database if not exists dev_bronze_covid;
+# MAGIC create database if not exists dev_silver_covid;
+# MAGIC create database if not exists dev_gold
 
 # COMMAND ----------
 
@@ -75,7 +77,7 @@ from datalakebundle.table.TableNames import TableNames
 # Check 
 @dataFrameLoader("%datalakebundle.tables%", display=False)
 def read_csv_mask_usage(parameters_datalakebundle, spark: SparkSession, logger: Logger):
-    source_csv_path = parameters_datalakebundle['bronze_covid.tbl_template_1']['source_csv_path']
+    source_csv_path = parameters_datalakebundle['bronze_covid.tbl_template_1_mask_usage']['source_csv_path']
     logger.info(f"Reading CSV from source path: `{source_csv_path}`.")
     return (
         spark
@@ -117,6 +119,14 @@ def add_column_insert_ts(df: DataFrame, logger: Logger):
 
 # COMMAND ----------
 
+@transformation(add_column_insert_ts, display=True)
+def sss(df: DataFrame, logger: Logger):
+    logger.info("Adding Insert timestamp")
+    return df.withColumn('INSERT_TSx', F.lit(datetime.now()))
+    
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ### Passing dataframe between functions
 # MAGIC Normally you would pass dataframes between tranformation like this:
@@ -137,8 +147,8 @@ def add_column_insert_ts(df: DataFrame, logger: Logger):
 # COMMAND ----------
 
 @dataFrameSaver(add_column_insert_ts)
-def save_table(df: DataFrame, logger: Logger, tableNames: TableNames):
-    outputTableName = tableNames.getByAlias('bronze_covid.tbl_template_1')
+def save_table_bronze_covid_tbl_template_1_mask_usage(df: DataFrame, logger: Logger, tableNames: TableNames):
+    outputTableName = tableNames.getByAlias('bronze_covid.tbl_template_1_mask_usage')
     logger.info(f"Saving data to table: {outputTableName}")
     (
         df

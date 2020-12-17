@@ -7,7 +7,20 @@ parameters:
 
   datalakebundle:
     tables:
-      bronze_covid.tbl_template_1:
-        schemaPath: '__myproject__.bronze_covid.tbl_template_1.schema'
+      # Bronze Covid tables
+      bronze_covid.tbl_template_1_mask_usage:
+        schemaPath: '__myproject__.bronze_covid.tbl_template_1_mask_usage.schema'
         source_csv_path: 'dbfs:/databricks-datasets/COVID/covid-19-data/mask-use/mask-use-by-county.csv'
         # targetPath is automatically resolved, if non-standard location required, define var targetPath
+
+      bronze_covid.tbl_template_2_confirmed_cases:
+        schemaPath: '__myproject__.bronze_covid.tbl_template_2_confirmed_cases.schema'
+        source_csv_path: 'dbfs:/databricks-datasets/COVID/USAFacts/covid_confirmed_usafacts.csv'
+
+      # Silver Covid tables
+      silver_covid.tbl_template_3_mask_usage:
+        schemaPath: '__myproject__.silver_covid.tbl_template_3_mask_usage.schema'
+
+      # Gold tables
+      gold.tbl_template_4_mask_usage_per_county:
+        schemaPath: '__myproject__.gold.tbl_template_4_mask_usage_per_county.schema'

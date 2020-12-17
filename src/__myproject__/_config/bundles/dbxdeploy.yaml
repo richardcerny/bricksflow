@@ -8,7 +8,7 @@ parameters:
           - 'solutions/**/*.py'
           - 'bronze_covid/**/*.py'
           - 'silver_covid/**/*.py'
-          - 'gold_covid/**/*.py'
+          - 'gold/**/*.py'
     target:
       workspaceBaseDir: '%databricks.workspaceBaseDir%'
     databricks:
