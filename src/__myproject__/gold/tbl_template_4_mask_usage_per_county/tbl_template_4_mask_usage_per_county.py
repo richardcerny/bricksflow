@@ -1,4 +1,13 @@
 # Databricks notebook source
+# MAGIC %md
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/databricks_icon.png?raw=true" width=100/> 
+# MAGIC # Bricksflow example 4.
+# MAGIC 
+# MAGIC ## Tips, tricks & examples
+# MAGIC - ...
+
+# COMMAND ----------
+
 # MAGIC %run ../../app/install_master_package
 
 # COMMAND ----------
@@ -34,6 +43,7 @@ def read_table_silver_covid_tbl_template_3_mask_usage(spark: SparkSession, table
 
 # COMMAND ----------
 
+# DBTITLE 1,How to join more dataframes using @transformation?
 @transformation(read_bronze_covid_tbl_template_2_confirmed_case, read_table_silver_covid_tbl_template_3_mask_usage, display=True)
 def join_covid_datasets(df1: DataFrame, df2: DataFrame):
     return (

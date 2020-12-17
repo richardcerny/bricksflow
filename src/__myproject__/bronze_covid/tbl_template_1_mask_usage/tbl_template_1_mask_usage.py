@@ -8,6 +8,9 @@
 # MAGIC This is a very first template notebook that should give you brief overeview how to develop pipeline using Bricksflow.
 # MAGIC 
 # MAGIC You learn how to organize cells and functions, use `@decorators`, pass variables from `config.yaml`.
+# MAGIC 
+# MAGIC There are other template notebooks within this project so just look for _template_ notebooks within workspace.
+# MAGIC 
 
 # COMMAND ----------
 

@@ -1,5 +1,36 @@
 # Databricks notebook source
+# MAGIC %md
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/databricks_icon.png?raw=true" width=100/> 
+# MAGIC # Bricksflow example 3.
+# MAGIC 
+# MAGIC ## Productionalizing notebook in Bricksflow
+# MAGIC It always takse some time to productionalize notebook.
+# MAGIC What is usually necesary to do:
+# MAGIC - cleaning a code from testing part
+# MAGIC - comments some part of code
+# MAGIC - all code is in functions
+# MAGIC - remove unnecesary comments
+# MAGIC - resolve ToDos
+# MAGIC - replace hardcoded variable with config parameters
+# MAGIC - test that it still works the same after clean up
+# MAGIC - use linting tools (pylint, black, flake8)
+# MAGIC - ...
+# MAGIC 
+# MAGIC 
+# MAGIC ### Write modes - append, overwrite
+# MAGIC Todo
+
+# COMMAND ----------
+
 # MAGIC %run ../../app/install_master_package
+
+# COMMAND ----------
+
+
+
+# COMMAND ----------
+
+
 
 # COMMAND ----------
 
@@ -38,10 +69,6 @@ def add_parameter_from_config(config_yaml_parameter, df: DataFrame):
         df
              .withColumn('CONFIG_YAML_PARAMETER',F.lit(config_yaml_parameter)) #todo  pipelineParams.randomVariable pipelineParams: Box
     )
-
-# COMMAND ----------
-
-print(add_parameter_from_config_df.printSchema())
 
 # COMMAND ----------
 

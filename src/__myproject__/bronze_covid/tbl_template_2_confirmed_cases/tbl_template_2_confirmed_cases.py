@@ -1,5 +1,51 @@
 # Databricks notebook source
+# MAGIC %md
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/databricks_icon.png?raw=true" width=100/> 
+# MAGIC # Bricksflow example 2.
+# MAGIC 
+# MAGIC ## Datalake structure
+# MAGIC There are many ways how to create database and table names. You can see two approaches in DataSentics. They are pretty similar just the naming is used  bit differently. As the common concept used by Datalake is Bronze, Silver, Gold. Before this become common we used sometinhg similar Raw, Parsed, Cleansed.
+# MAGIC 
+# MAGIC **Key concept of Datalake created by DataSentics:**
+# MAGIC - according to database and table name it is possible to find raw data in Storage and notebook/script that creates it and other way arround
+# MAGIC - keep all source files
+# MAGIC - ONE notebook/script creates only ONE table
+# MAGIC - tables are defined in config (not hardcoded in the code)
+# MAGIC - table schema is tight to the script/notebook
+# MAGIC - data is written to a table (not to a file)
+# MAGIC - ...
+# MAGIC 
+# MAGIC ## Datalake structure in Bricksflow
+# MAGIC Bricksflow uses so called Datalake bundle to maintain all tables within a config so you always now which tables are in use.
+# MAGIC By default it requires just a table name and it resolves the path where to save data automatically.
+# MAGIC 
+# MAGIC ##### Example of config.yaml
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/datalake_config.png?raw=true" width=1200/> 
+# MAGIC 
+# MAGIC Non-default setting:
+# MAGIC - If you want to adjust Storage path resolver you can find it here: ``\src\__myproject__\_config\bundles\datalakebundle.yaml`. It uses simple python find function to split the table names according "_".
+# MAGIC - If you need exact path you can use variable `targetPath` to save a table to desired location. See commented example in config.yaml in picture above.
+# MAGIC 
+# MAGIC 
+# MAGIC 
+# MAGIC ### 1. Common Datalake layers Bronze, Silver, Gold
+# MAGIC Todo Image
+# MAGIC 
+# MAGIC ### 2. ADAP Layers dataoneoff, dataregular, solutions
+# MAGIC Todo Image
+# MAGIC 
+
+# COMMAND ----------
+
 # MAGIC %run ../../app/install_master_package
+
+# COMMAND ----------
+
+
+
+# COMMAND ----------
+
+
 
 # COMMAND ----------
 
@@ -8,10 +54,6 @@ from pyspark.sql import functions as F, SparkSession
 from pyspark.sql.dataframe import DataFrame
 from databricksbundle.pipeline.decorator.loader import dataFrameLoader, transformation, dataFrameSaver
 from datalakebundle.table.TableNames import TableNames
-
-# def flatten_table
-from pyspark.sql import Row
-from functools import partial
 
 # COMMAND ----------
 
@@ -36,6 +78,34 @@ def rename_columns(df: DataFrame):
         df
             .withColumnRenamed('County Name', 'County_Name')
     )
+
+# COMMAND ----------
+
+# MAGIC %md 
+# MAGIC #### Table schema
+# MAGIC Each table defined in config must be tight with its schema. So you need to create schema of a table if you need to create it.
+# MAGIC But don`t worry creating a schema is one of the last step you need to do while creating pipeline. Use display instead to show temporary results. Once you are happy with the result and you know exactly which columns are necessay then create a  schema.
+# MAGIC 
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/table_schema.png?raw=true"/> 
+# MAGIC 
+# MAGIC 
+# MAGIC 
+# MAGIC TODO add schema generator to Bricksflow 
+# MAGIC print(createPysparkSchema(add_parameter_from_config_df.schema))
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC TIP: Did you know that each function returns a dataframe. So if you need to test someting or get a schema for example, you can quickly do discovery on the dataframe produced by function. Just add postfix _df to function name and you can access the dataframe.
+# MAGIC 
+# MAGIC 
+# MAGIC 
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/function_returns_df.png?raw=true"/> 
+# MAGIC 
+
+# COMMAND ----------
+
+print(rename_columns_df.printSchema())
 
 # COMMAND ----------
 
