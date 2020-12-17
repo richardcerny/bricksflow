@@ -7,7 +7,7 @@ parameters:
 
   datalakebundle:
     tables:
-      bronze_covid.tbl_covid_mask_usage:
-        schemaPath: '__myproject__.bronze_covid.tbl_covid_mask_usage.schema'
+      bronze_covid.tbl_template_1:
+        schemaPath: '__myproject__.bronze_covid.tbl_template_1.schema'
         source_csv_path: 'dbfs:/databricks-datasets/COVID/covid-19-data/mask-use/mask-use-by-county.csv'
         # targetPath is automatically resolved, if non-standard location required, define var targetPath
