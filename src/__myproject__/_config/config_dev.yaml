@@ -7,4 +7,4 @@ parameters:
     clusterId: '1021-090514-dolly408'
     orgId: '8394585307568385' # Azure Databricks only
     #workspaceBaseDir: '/master' # change to '/{currentBranch}' to use current branch name as dir name
-    workspaceBaseDir: '/bricksflow-template/{currentBranch}' #to use current branch name as dir name
+    workspaceBaseDir: '/{currentBranch}' #to use current branch name as dir name

@@ -39,6 +39,8 @@ def read_table_silver_covid_tbl_template_3_mask_usage(spark: SparkSession, table
         spark
             .read
             .table(tableNames.getByAlias('silver_covid.tbl_template_3_mask_usage'))
+      
+            .withColumn('EXECUTE_DATE', F.to_date(F.col('EXECUTE_DATETIME')))
     )
 
 # COMMAND ----------
@@ -53,9 +55,24 @@ def join_covid_datasets(df1: DataFrame, df2: DataFrame):
 # COMMAND ----------
 
 @transformation(join_covid_datasets, display=True)
+def agg_avg_mask_usage_per_county(df: DataFrame):
+    return (
+        df
+          .groupBy('EXECUTE_DATE','County_Name', 'CONFIG_YAML_PARAMETER')
+          .agg(F.avg('NEVER').alias('AVG_NEVER'),
+              F.avg('RARELY').alias('AVG_RARELY'),
+              F.avg('SOMETIMES').alias('AVG_SOMETIMES'),
+              F.avg('FREQUENTLY').alias('AVG_FREQUENTLY'),
+              F.avg('ALWAYS').alias('AVG_ALWAYS')
+          )
+    )
+
+# COMMAND ----------
+
+@transformation(agg_avg_mask_usage_per_county, display=True)
 def standardize_dataset(df: DataFrame):
     return (
-        df.drop('countyFIPS')
+        df.withColumnRenamed('County_Name', 'COUNTY_NAME')
     )
 
 # COMMAND ----------
@@ -68,17 +85,14 @@ def save_table_gold_tbl_template_4_mask_usage_per_count(df: DataFrame, logger: L
     (
         df
             .select(
-                 'County_Name',
-                 'State',
-                 'stateFIPS',
-                 'COUNTYFP',
-                 'NEVER',
-                 'RARELY',
-                 'SOMETIMES',
-                 'FREQUENTLY',
-                 'ALWAYS',
-                 'EXECUTE_DATETIME',
-                 'CONFIG_YAML_PARAMETER'
+                 'EXECUTE_DATE',
+                 'COUNTY_NAME',
+                 'CONFIG_YAML_PARAMETER',
+                 'AVG_NEVER',
+                 'AVG_RARELY',
+                 'AVG_SOMETIMES',
+                 'AVG_FREQUENTLY',
+                 'AVG_ALWAYS',
             )
             .write
             .option('partitionOverwriteMode', 'dynamic')
