@@ -3,8 +3,12 @@
 # MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/databricks_icon.png?raw=true" width=100/> 
 # MAGIC # Bricksflow example 4.
 # MAGIC 
-# MAGIC ## Tips, tricks & examples
-# MAGIC - ...
+# MAGIC ## Bricksflow Development flow
+# MAGIC There is a standard process of developing pipelines using Bricksflow. The aim is to use SW Engineering practices while still working in interactively in Databricks notebooks. Follow schema bellow while using Bricksflow. 
+# MAGIC 
+# MAGIC If you want to get more info about the process check Bricksflow User training video: TODO
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/development-flow.png?raw=true" width=1200/> 
+# MAGIC 
 
 # COMMAND ----------
 
