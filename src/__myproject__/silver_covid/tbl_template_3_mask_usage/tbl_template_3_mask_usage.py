@@ -3,34 +3,16 @@
 # MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/databricks_icon.png?raw=true" width=100/> 
 # MAGIC # Bricksflow example 3.
 # MAGIC 
-# MAGIC ## Productionalizing notebook in Bricksflow
-# MAGIC It always takse some time to productionalize notebook.
-# MAGIC What is usually necesary to do:
-# MAGIC - cleaning a code from testing part
-# MAGIC - comments some part of code
-# MAGIC - all code is in functions
-# MAGIC - remove unnecesary comments
-# MAGIC - resolve ToDos
-# MAGIC - replace hardcoded variable with config parameters
-# MAGIC - test that it still works the same after clean up
-# MAGIC - use linting tools (pylint, black, flake8)
-# MAGIC - ...
+# MAGIC ## Bricksflow Development flow
+# MAGIC There is a standard process of developing pipelines using Bricksflow. The aim is to use SW Engineering practices while still working in interactively in Databricks notebooks. Follow schema bellow while using Bricksflow. 
 # MAGIC 
+# MAGIC If you want to get more info about the process check Bricksflow User training video: TODO
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/development-flow.png?raw=true" width=1200/> 
 # MAGIC 
-# MAGIC ### Write modes - append, overwrite
-# MAGIC Todo
 
 # COMMAND ----------
 
 # MAGIC %run ../../app/install_master_package
-
-# COMMAND ----------
-
-
-
-# COMMAND ----------
-
-
 
 # COMMAND ----------
 
