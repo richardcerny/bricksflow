@@ -12,7 +12,15 @@
 
 # COMMAND ----------
 
-# MAGIC %run ../../app/install_master_package
+# MAGIC %md ## Common console commands you would use:
+# MAGIC - `console dbx:deploy --env=dev` to upload notebooks & configs from local to Databricks
+# MAGIC - `console dbx:workspace:export --env=dev` to download notebooks from Databricks to local
+# MAGIC 
+# MAGIC Tip: By executing `console` you get list of available commands that you can use
+
+# COMMAND ----------
+
+# MAGIC %run ../../../app/install_master_package
 
 # COMMAND ----------
 

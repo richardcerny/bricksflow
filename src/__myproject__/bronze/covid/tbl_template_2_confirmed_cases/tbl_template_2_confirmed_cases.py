@@ -37,15 +37,7 @@
 
 # COMMAND ----------
 
-# MAGIC %run ../../app/install_master_package
-
-# COMMAND ----------
-
-
-
-# COMMAND ----------
-
-
+# MAGIC %run ../../../app/install_master_package
 
 # COMMAND ----------
 

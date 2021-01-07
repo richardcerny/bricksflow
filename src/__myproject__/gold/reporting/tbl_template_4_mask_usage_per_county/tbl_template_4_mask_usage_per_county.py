@@ -22,7 +22,7 @@
 
 # COMMAND ----------
 
-# MAGIC %run ../../app/install_master_package
+# MAGIC %run ../../../app/install_master_package
 
 # COMMAND ----------
 
@@ -94,7 +94,7 @@ def standardize_dataset(df: DataFrame):
 @dataFrameSaver(standardize_dataset)
 def save_table_gold_tbl_template_4_mask_usage_per_count(df: DataFrame, logger: Logger, tableNames: TableNames):
 
-    outputTableName = tableNames.getByAlias('gold.tbl_template_4_mask_usage_per_county')
+    outputTableName = tableNames.getByAlias('gold_reporting.tbl_template_4_mask_usage_per_county')
     logger.info(f"Saving data to table: {outputTableName}")
     (
         df

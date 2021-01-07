@@ -41,12 +41,12 @@
 # MAGIC -- this cell is only for demo purposes
 # MAGIC create database if not exists dev_bronze_covid;
 # MAGIC create database if not exists dev_silver_covid;
-# MAGIC create database if not exists dev_gold
+# MAGIC create database if not exists dev_gold_reporting
 
 # COMMAND ----------
 
 # DBTITLE 1,This command loads Bricksflow framework and its dependencies
-# MAGIC %run ../../app/install_master_package
+# MAGIC %run ../../../app/install_master_package
 
 # COMMAND ----------
 
