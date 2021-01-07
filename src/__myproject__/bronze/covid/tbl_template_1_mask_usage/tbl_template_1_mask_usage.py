@@ -87,7 +87,7 @@ def read_csv_mask_usage(parameters_datalakebundle, spark: SparkSession, logger: 
             .read
             .format('csv')
             .option('header', 'true')
-            .option('inferSchema', 'true') # it might be better idea to define schema
+            .option('inferSchema', 'true') # Tip: it might be better idea to define schema!
             .load(source_csv_path)
     )
 
@@ -118,14 +118,6 @@ def read_csv_mask_usage(parameters_datalakebundle, spark: SparkSession, logger: 
 def add_column_insert_ts(df: DataFrame, logger: Logger):
     logger.info("Adding Insert timestamp")
     return df.withColumn('INSERT_TS', F.lit(datetime.now()))
-    
-
-# COMMAND ----------
-
-@transformation(add_column_insert_ts, display=True)
-def sss(df: DataFrame, logger: Logger):
-    logger.info("Adding Insert timestamp")
-    return df.withColumn('INSERT_TSx', F.lit(datetime.now()))
     
 
 # COMMAND ----------

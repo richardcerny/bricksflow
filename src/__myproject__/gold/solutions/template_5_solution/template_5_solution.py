@@ -3,12 +3,19 @@
 # MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/databricks_icon.png?raw=true" width=100/> 
 # MAGIC # Bricksflow example 5.
 # MAGIC 
-# MAGIC Widgety, secrets pipelinFuncitons
+# MAGIC Widgets, secrets, pipelinFuncitons
 # MAGIC 
+# MAGIC ## Widgets
+# MAGIC Many people love widgets as they can easilly parametrize their notebook. It is possible to use widget with Bricksflow. Usage is demonstrated in this notebook. Don't forget to check [Widgets documentation](ttps://docs.databricks.com/notebooks/widgets.html) or run command `dbutils.widgets.help()` to see options you have while working with widget.
 
 # COMMAND ----------
 
-# MAGIC %run ../../app/install_master_package
+# MAGIC %run ../../../app/install_master_package
+
+# COMMAND ----------
+
+# DBTITLE 1,Databricks widget options
+dbutils.widgets.help()
 
 # COMMAND ----------
 
@@ -21,80 +28,23 @@ from datalakebundle.table.TableNames import TableNames
 
 # COMMAND ----------
 
-@dataFrameLoader(display=True)
-def read_bronze_covid_tbl_template_2_confirmed_case(spark: SparkSession, tableNames: TableNames):
+dbutils.widgets.text("widget_states", "CA", 'States') # Examples: CA, IL, IN,...
+widgetStatesVariable = dbutils.widgets.get("widget_states")
+
+# COMMAND ----------
+
+# DBTITLE 1,Usage of widget variable
+@dataFrameLoader(widgetStatesVariable, display=True)
+def read_bronze_covid_tbl_template_2_confirmed_case(stateName: str, spark: SparkSession, logger: Logger, tableNames: TableNames):
+    logger.info(f"States Widget value: {state}")
     return (
         spark
             .read
             .table(tableNames.getByAlias('bronze_covid.tbl_template_2_confirmed_cases'))
             .select('countyFIPS','County_Name', 'State', 'stateFIPS')
-            .dropDuplicates()
+            .filter(F.col('State')==stateName) # Widget variable is used
     )
 
 # COMMAND ----------
 
-@dataFrameLoader(display=True)
-def read_table_silver_covid_tbl_template_3_mask_usage(spark: SparkSession, tableNames: TableNames):
-    return (
-        spark
-            .read
-            .table(tableNames.getByAlias('silver_covid.tbl_template_3_mask_usage'))
-      
-            .withColumn('EXECUTE_DATE', F.to_date(F.col('EXECUTE_DATETIME')))
-    )
-
-# COMMAND ----------
-
-# DBTITLE 1,How to join more dataframes using @transformation?
-@transformation(read_bronze_covid_tbl_template_2_confirmed_case, read_table_silver_covid_tbl_template_3_mask_usage, display=True)
-def join_covid_datasets(df1: DataFrame, df2: DataFrame):
-    return (
-        df1.join(df2, df1.countyFIPS == df2.COUNTYFP, how='right')
-    )
-
-# COMMAND ----------
-
-@transformation(join_covid_datasets, display=True)
-def agg_avg_mask_usage_per_county(df: DataFrame):
-    return (
-        df
-          .groupBy('EXECUTE_DATE','County_Name', 'CONFIG_YAML_PARAMETER')
-          .agg(F.avg('NEVER').alias('AVG_NEVER'),
-              F.avg('RARELY').alias('AVG_RARELY'),
-              F.avg('SOMETIMES').alias('AVG_SOMETIMES'),
-              F.avg('FREQUENTLY').alias('AVG_FREQUENTLY'),
-              F.avg('ALWAYS').alias('AVG_ALWAYS')
-          )
-    )
-
-# COMMAND ----------
-
-@transformation(agg_avg_mask_usage_per_county, display=True)
-def standardize_dataset(df: DataFrame):
-    return (
-        df.withColumnRenamed('County_Name', 'COUNTY_NAME')
-    )
-
-# COMMAND ----------
-
-@dataFrameSaver(standardize_dataset)
-def save_table_gold_tbl_template_4_mask_usage_per_count(df: DataFrame, logger: Logger, tableNames: TableNames):
-
-    outputTableName = tableNames.getByAlias('gold.tbl_template_4_mask_usage_per_county')
-    logger.info(f"Saving data to table: {outputTableName}")
-    (
-        df
-            .select(
-                 'EXECUTE_DATE',
-                 'COUNTY_NAME',
-                 'CONFIG_YAML_PARAMETER',
-                 'AVG_NEVER',
-                 'AVG_RARELY',
-                 'AVG_SOMETIMES',
-                 'AVG_FREQUENTLY',
-                 'AVG_ALWAYS',
-            )
-            .write
-            .option('partitionOverwriteMode', 'dynamic')
-            .insertInto(outputTableName)
-    )
+# next commands
