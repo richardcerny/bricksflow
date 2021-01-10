@@ -24,11 +24,21 @@
 
 # COMMAND ----------
 
-from logging import Logger
-from pyspark.sql.dataframe import DataFrame
+
+
+# COMMAND ----------
+
+
+
+# COMMAND ----------
+
 from pyspark.sql import functions as F, SparkSession
 from datetime import datetime
-from databricksbundle.pipeline.decorator.loader import dataFrameLoader, pipelineFunction, transformation, dataFrameSaver
+from logging import Logger
+from datalakebundle.table.TableManager import TableManager
+from pyspark.sql import SparkSession
+from pyspark.sql.dataframe import DataFrame
+from databricksbundle.notebook.decorators import dataFrameLoader, transformation, dataFrameSaver
 from datalakebundle.table.TableNames import TableNames
 
 # COMMAND ----------
@@ -63,9 +73,13 @@ def add_parameter_from_config(config_yaml_parameter, df: DataFrame):
 # COMMAND ----------
 
 @dataFrameSaver(add_parameter_from_config)
-def save_table_silver_covid_tbl_template_3_mask_usage(df: DataFrame, logger: Logger, tableNames: TableNames):
-
+def save_table_silver_covid_tbl_template_3_mask_usage(df: DataFrame, logger: Logger, tableNames: TableNames, tableManager: TableManager):
     outputTableName = tableNames.getByAlias('silver_covid.tbl_template_3_mask_usage')
+    if tableManager.exists('silver_covid.tbl_template_3_mask_usage'):
+        logger.info(f"Table {outputTableName} exists. Appending...")
+    else:
+        tableManager.create('silver_covid.tbl_template_3_mask_usage')
+    
     logger.info(f"Saving data to table: {outputTableName}")
     (
         df

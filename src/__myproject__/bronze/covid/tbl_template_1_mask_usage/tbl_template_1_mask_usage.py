@@ -51,12 +51,14 @@
 # COMMAND ----------
 
 # DBTITLE 1,All your imports should be placed up here 
-from logging import Logger
 from datetime import datetime
 from pyspark.sql import functions as F, SparkSession
+
+from logging import Logger
+from datalakebundle.table.TableManager import TableManager
+from pyspark.sql import SparkSession
 from pyspark.sql.dataframe import DataFrame
-from databricksbundle.pipeline.decorator.loader import dataFrameLoader, transformation, dataFrameSaver
-# Datalake Bundle
+from databricksbundle.notebook.decorators import dataFrameLoader, transformation, dataFrameSaver
 from datalakebundle.table.TableNames import TableNames
 
 # COMMAND ----------
@@ -80,7 +82,7 @@ from datalakebundle.table.TableNames import TableNames
 # Check 
 @dataFrameLoader("%datalakebundle.tables%", display=False)
 def read_csv_mask_usage(parameters_datalakebundle, spark: SparkSession, logger: Logger):
-    source_csv_path = parameters_datalakebundle['bronze_covid.tbl_template_1_mask_usage']['source_csv_path']
+    source_csv_path = parameters_datalakebundle['bronze_covid.tbl_template_1_mask_usage']['params']['source_csv_path']
     logger.info(f"Reading CSV from source path: `{source_csv_path}`.")
     return (
         spark
@@ -142,7 +144,11 @@ def add_column_insert_ts(df: DataFrame, logger: Logger):
 # COMMAND ----------
 
 @dataFrameSaver(add_column_insert_ts)
-def save_table_bronze_covid_tbl_template_1_mask_usage(df: DataFrame, logger: Logger, tableNames: TableNames):
+def save_table_bronze_covid_tbl_template_1_mask_usage(df: DataFrame, logger: Logger, tableNames: TableNames,  tableManager: TableManager):
+    
+    # Recreate = removed table and create again
+    tableManager.recreate('bronze_covid.tbl_template_1_mask_usage')
+    
     outputTableName = tableNames.getByAlias('bronze_covid.tbl_template_1_mask_usage')
     logger.info(f"Saving data to table: {outputTableName}")
     (
