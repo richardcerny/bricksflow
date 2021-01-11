@@ -26,11 +26,12 @@
 
 # COMMAND ----------
 
+from pyspark.sql import functions as F
 from logging import Logger
+from datalakebundle.table.TableManager import TableManager
+from pyspark.sql import SparkSession
 from pyspark.sql.dataframe import DataFrame
-from pyspark.sql import functions as F, SparkSession
-from datetime import datetime
-from databricksbundle.pipeline.decorator.loader import dataFrameLoader, transformation, dataFrameSaver
+from databricksbundle.notebook.decorators import dataFrameLoader, transformation, dataFrameSaver
 from datalakebundle.table.TableNames import TableNames
 
 # COMMAND ----------
@@ -92,9 +93,10 @@ def standardize_dataset(df: DataFrame):
 # COMMAND ----------
 
 @dataFrameSaver(standardize_dataset)
-def save_table_gold_tbl_template_4_mask_usage_per_count(df: DataFrame, logger: Logger, tableNames: TableNames):
-
+def save_table_gold_tbl_template_4_mask_usage_per_count(df: DataFrame, logger: Logger, tableNames: TableNames, tableManager: TableManager):
+    
     outputTableName = tableNames.getByAlias('gold_reporting.tbl_template_4_mask_usage_per_county')
+    tableManager.recreate('gold_reporting.tbl_template_4_mask_usage_per_county')
     logger.info(f"Saving data to table: {outputTableName}")
     (
         df

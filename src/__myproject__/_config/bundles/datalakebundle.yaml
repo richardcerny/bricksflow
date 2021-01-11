@@ -2,7 +2,7 @@
 parameters:
   datalakebundle:
     notebook:
-      scriptPathTemplate: '{rootModulePath}/{layer}/{domain}/{dbIdentifier}/{tableIdentifier}.py'
+      scriptPathTemplate: '{rootModulePath}/{layer}/{domain}/{tableIdentifier}/{tableIdentifier}.py'
     table:
       nameTemplate: '%kernel.environment%_{identifier}'
       defaults:
