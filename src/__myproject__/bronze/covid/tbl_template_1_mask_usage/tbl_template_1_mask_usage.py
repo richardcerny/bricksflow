@@ -23,7 +23,6 @@
 # MAGIC ##### Environment variables defined on a cluster
 # MAGIC ```
 # MAGIC APP_ENV=dev
-# MAGIC CONTAINER_INIT_FUNCTION=[ROOT_MODULE].ContainerInit.initContainer
 # MAGIC ```
 # MAGIC 
 # MAGIC ##### Database `dev_bronze_covid`
@@ -101,6 +100,7 @@ def read_csv_mask_usage(parameters_datalakebundle, spark: SparkSession, logger: 
 # MAGIC - *@dataFrameLoader* - use when loading table or data from source. Accepts varibles from config and returns dataframe.
 # MAGIC - *@transformation* - use for any kind of dataframe transformation/step. You probably use many of those. Accepts Input dataframe and varibles from config, Returns dataframe.
 # MAGIC - *@dataFrameSaver* - use when saving dataframe to a table. Accepts only Input dataframe and varibles from config.
+# MAGIC - *@notebookFunction* - use when running any other Python code like - Mlflow, Widgets, Secrets,...
 # MAGIC 
 # MAGIC #### Decorators parameters
 # MAGIC It is possible to define some functionality by decorates. You have this possibilities:
@@ -146,7 +146,7 @@ def add_column_insert_ts(df: DataFrame, logger: Logger):
 @dataFrameSaver(add_column_insert_ts)
 def save_table_bronze_covid_tbl_template_1_mask_usage(df: DataFrame, logger: Logger, tableNames: TableNames,  tableManager: TableManager):
     
-    # Recreate = removed table and create again
+    # Recreate = remove table and create again
     tableManager.recreate('bronze_covid.tbl_template_1_mask_usage')
     
     outputTableName = tableNames.getByAlias('bronze_covid.tbl_template_1_mask_usage')
@@ -167,32 +167,3 @@ def save_table_bronze_covid_tbl_template_1_mask_usage(df: DataFrame, logger: Log
             .insertInto(outputTableName)
     )
     logger.info(f"Data successfully saved to: {outputTableName}")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### Config overview (not-editable in Databricks)
-# MAGIC You might have noticed some variables which were used in the functions above like `source_csv_path` and `outputTableName`. This variables/parameters are gathered from config file that is editable only from Git/Local. It is not possible to change config within Databricks (yet).
-# MAGIC 
-# MAGIC There are some general config parameters
-# MAGIC 
-# MAGIC 
-# MAGIC #### Basic parameters
-# MAGIC Common parameters accessible anywhere and passed through @decorator
-# MAGIC 
-# MAGIC **Define param in config.yaml**
-# MAGIC ```
-# MAGIC parameters:
-# MAGIC   myparameter:
-# MAGIC     myvalue: 'This is a sample string config value'
-# MAGIC ```
-# MAGIC **Use param in code**
-# MAGIC ```
-# MAGIC @dataFrameLoader("%myparameter.myvalue%", display=True)
-# MAGIC def tbl_raw_trace_event(my_value_from_config: str, spark: SparkSession)
-# MAGIC    print(my_value_from_config)
-# MAGIC    ...
-# MAGIC ```
-# MAGIC 
-# MAGIC #### Datalake Bundle parameters
-# MAGIC See in other notebook

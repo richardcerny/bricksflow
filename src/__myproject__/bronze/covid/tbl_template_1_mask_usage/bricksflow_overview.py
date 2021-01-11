@@ -49,7 +49,7 @@
 # MAGIC %md
 # MAGIC ## What does it mean for me?
 # MAGIC You will follow a standard way of creating notebooks that includes:
-# MAGIC - pack you transformation into functions
+# MAGIC - wrap transformations into functions
 # MAGIC - use @decorators
 # MAGIC 
 # MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/dbx_vs_bricksflow.PNG?raw=true" width=1200/> 

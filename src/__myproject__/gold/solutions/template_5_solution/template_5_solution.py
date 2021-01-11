@@ -3,7 +3,7 @@
 # MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/databricks_icon.png?raw=true" width=100/> 
 # MAGIC # Bricksflow example 5.
 # MAGIC 
-# MAGIC Widgets, secrets, pipelinFuncitons
+# MAGIC Widgets, secrets, notebookFunction
 # MAGIC 
 # MAGIC ## Widgets
 # MAGIC Many people love widgets as they can easilly parametrize their notebook. It is possible to use widget with Bricksflow. Usage is demonstrated in this notebook. Don't forget to check [Widgets documentation](ttps://docs.databricks.com/notebooks/widgets.html) or run command `dbutils.widgets.help()` to see options you have while working with widget.
@@ -11,14 +11,6 @@
 # COMMAND ----------
 
 # MAGIC %run ../../../app/install_master_package
-
-# COMMAND ----------
-
-
-
-# COMMAND ----------
-
-
 
 # COMMAND ----------
 
