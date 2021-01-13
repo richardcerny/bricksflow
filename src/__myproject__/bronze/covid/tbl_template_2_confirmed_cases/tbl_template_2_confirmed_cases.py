@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/databricks_icon.png?raw=true" width=100/> 
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-bricksflow2.1/docs/img/databricks_icon.png?raw=true" width=100/>
 # MAGIC # Bricksflow example 2.
 # MAGIC 
 # MAGIC ## Tables over files
@@ -24,7 +24,7 @@
 # MAGIC By default it requires just a table name and it resolves the path where to save data automatically.
 # MAGIC 
 # MAGIC ##### Example of config.yaml
-# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/datalake_config.png?raw=true" width=1200/> 
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-bricksflow2.1/docs/img/datalake_config.png?raw=true" width=1200/>
 # MAGIC 
 # MAGIC Non-default setting:
 # MAGIC - If you want to adjust Storage path resolver you can find it here: ``\src\__myproject__\_config\bundles\datalakebundle.yaml`. It uses simple python find function to split the table names according "_".
@@ -71,6 +71,14 @@
 
 # COMMAND ----------
 
+
+
+# COMMAND ----------
+
+
+
+# COMMAND ----------
+
 from logging import Logger
 from datalakebundle.table.TableManager import TableManager
 from pyspark.sql import SparkSession
@@ -91,6 +99,7 @@ def read_csv_covid_confirmed_usafacts(parameters_datalakebundle, spark: SparkSes
             .option('header', 'true')
             .option('inferSchema', 'true')
             .load(source_csv_path)
+            .limit(10) # only for test
     )
 
 # COMMAND ----------
@@ -105,11 +114,11 @@ def rename_columns(df: DataFrame):
 # COMMAND ----------
 
 # MAGIC %md 
-# MAGIC #### Table schema
+# MAGIC ### Table schema
 # MAGIC Each table defined in config must be tight with its schema. So you need to create schema of a table if you need to create it.
 # MAGIC But don`t worry creating a schema is one of the last step you need to do while creating pipeline. Use display instead to show temporary results. Once you are happy with the result and you know exactly which columns are necessay then create a  schema.
 # MAGIC 
-# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/table_schema.png?raw=true"/> 
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-bricksflow2.1/docs/img/table_schema.png?raw=true"/>
 # MAGIC 
 # MAGIC 
 # MAGIC 
@@ -123,16 +132,24 @@ def rename_columns(df: DataFrame):
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC TIP: Did you know that each function returns a dataframe. So if you need to test someting or get a schema for example, you can quickly do discovery on the dataframe produced by function. Just add postfix _df to function name and you can access the dataframe.
+# MAGIC TIP: Did you know that each function returns a dataframe. So if you need to test someting or get a schema for example, you can quickly do discovery on the dataframe produced by function. Just by calling `[function name].result`. It returns standard Spark Dataframe so you can test code before you wrap it into a function.
 # MAGIC 
 # MAGIC 
 # MAGIC 
-# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/function_returns_df.png?raw=true"/> 
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-bricksflow2.1/docs/img/function_returns_df.png?raw=true"/>
 # MAGIC 
 
 # COMMAND ----------
 
-print(rename_columns_df.printSchema())
+# MAGIC %md ### Example function result
+
+# COMMAND ----------
+
+df = rename_columns.result
+
+# COMMAND ----------
+
+print(df.printSchema())
 
 # COMMAND ----------
 
@@ -151,7 +168,10 @@ print(rename_columns_df.printSchema())
 
 # COMMAND ----------
 
-# DBTITLE 1,a) You want create a table once and than append data use 'exists' & 'create'
+# MAGIC %md ### a) You want create a table once and than append data use 'exists' & 'create'
+
+# COMMAND ----------
+
 @dataFrameSaver(rename_columns)
 def save_table_ronze_covid_tbl_template_2_confirmed_cases(df: DataFrame, logger: Logger, tableNames: TableNames, tableManager: TableManager):
     outputTableName = tableNames.getByAlias('bronze_covid.tbl_template_2_confirmed_cases')
@@ -179,7 +199,10 @@ def save_table_ronze_covid_tbl_template_2_confirmed_cases(df: DataFrame, logger:
 
 # COMMAND ----------
 
-# DBTITLE 1,b) You want a table to be created each run from scratch - use 'recreate'
+# MAGIC %md ### b) You want a table to be created each run from scratch - use 'recreate'
+
+# COMMAND ----------
+
 @dataFrameSaver(rename_columns)
 def save_table_ronze_covid_tbl_template_2_confirmed_cases(df: DataFrame, logger: Logger, tableNames: TableNames, tableManager: TableManager):
     schema = tableManager.getSchema('bronze_covid.tbl_template_2_confirmed_cases')

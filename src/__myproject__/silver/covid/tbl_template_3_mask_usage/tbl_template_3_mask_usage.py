@@ -1,13 +1,13 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/databricks_icon.png?raw=true" width=100/> 
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-bricksflow2.1/docs/img/databricks_icon.png?raw=true" width=100/>
 # MAGIC # Bricksflow example 3.
 # MAGIC 
 # MAGIC ## Bricksflow Development flow - DEMO
 # MAGIC There is a standard process of developing pipelines using Bricksflow. The aim is to use SW Engineering practices while still working in interactively in Databricks notebooks. Follow schema bellow while using Bricksflow. 
 # MAGIC 
-# MAGIC If you want to get more info about the process check Bricksflow User training video: TODO
-# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/development-flow.png?raw=true" width=1200/> 
+# MAGIC If you want to get more info about the process check Bricksflow User training video - [Link](https://web.microsoftstream.com/video/e8e3ed9b-7944-4ea2-b314-8f0694853fcf)
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-bricksflow2.1/docs/img/development-flow.png?raw=true" width=1200/>
 # MAGIC 
 
 # COMMAND ----------
@@ -54,12 +54,12 @@ def add_execution_datetime(df: DataFrame):
 
 # COMMAND ----------
 
-@transformation("%myparameter.myvalue%", add_execution_datetime_df, display=True) # TODO bug  ... _df must be added while passing function name
+@transformation("%myparameter.myvalue%", add_execution_datetime, display=True)
 def add_parameter_from_config(config_yaml_parameter, df: DataFrame):
     print(config_yaml_parameter)
     return (
         df
-             .withColumn('CONFIG_YAML_PARAMETER',F.lit(config_yaml_parameter)) #todo  pipelineParams.randomVariable pipelineParams: Box
+             .withColumn('CONFIG_YAML_PARAMETER',F.lit(config_yaml_parameter))
     )
 
 # COMMAND ----------

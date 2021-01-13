@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/databricks_icon.png?raw=true" width=100/> 
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-bricksflow2.1/docs/img/databricks_icon.png?raw=true" width=100/>
 # MAGIC # Bricksflow example 1.
 # MAGIC 
 # MAGIC ## Create new table from CSV
@@ -44,12 +44,18 @@
 
 # COMMAND ----------
 
-# DBTITLE 1,This command loads Bricksflow framework and its dependencies
+# MAGIC %md ### This command loads Bricksflow framework and its dependencies
+
+# COMMAND ----------
+
 # MAGIC %run ../../../app/install_master_package
 
 # COMMAND ----------
 
-# DBTITLE 1,All your imports should be placed up here 
+# MAGIC %md ### All your imports should be placed up here 
+
+# COMMAND ----------
+
 from datetime import datetime
 from pyspark.sql import functions as F
 
@@ -73,12 +79,11 @@ from datalakebundle.table.TableNames import TableNames
 # MAGIC 
 # MAGIC #### Lineage example
 # MAGIC 
-# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/lineage.png?raw=true" width=1200/> 
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-bricksflow2.1/docs/img/lineage.png?raw=true" width=1200/>
 # MAGIC 
 
 # COMMAND ----------
 
-# Check 
 @dataFrameLoader("%datalakebundle.tables%", display=False)
 def read_csv_mask_usage(parameters_datalakebundle, spark: SparkSession, logger: Logger):
     source_csv_path = parameters_datalakebundle['bronze_covid.tbl_template_1_mask_usage']['params']['source_csv_path']
@@ -90,6 +95,7 @@ def read_csv_mask_usage(parameters_datalakebundle, spark: SparkSession, logger: 
             .option('header', 'true')
             .option('inferSchema', 'true') # Tip: it might be better idea to define schema!
             .load(source_csv_path)
+            .limit(10) # only for test
     )
 
 # COMMAND ----------
@@ -108,14 +114,17 @@ def read_csv_mask_usage(parameters_datalakebundle, spark: SparkSession, logger: 
 # MAGIC - `display=True/False`
 # MAGIC   Do you use display(df) function to show content of a dataframe? This parameter is exactly the same. By using it as decorator param we are able to easily deactivate it in production where it is not necessary. Set the parameter to True to show data preview or False to skip preview.
 # MAGIC   
-# MAGIC   <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/display_true.png?raw=true" width=800/> 
+# MAGIC   <img src="https://github.com/richardcerny/bricksflow/raw/rc-bricksflow2.1/docs/img/display_true.png?raw=true" width=800/>
 # MAGIC   
 # MAGIC   
 # MAGIC 
 
 # COMMAND ----------
 
-# DBTITLE 1,Set parameter display=True to show results in this cell
+# MAGIC %md ### Set parameter display=True to show results in this cell
+
+# COMMAND ----------
+
 @transformation(read_csv_mask_usage, display=True)
 def add_column_insert_ts(df: DataFrame, logger: Logger):
     logger.info("Adding Insert timestamp")
@@ -137,7 +146,7 @@ def add_column_insert_ts(df: DataFrame, logger: Logger):
 # MAGIC Basically you use name of original function and place it as an input parameter to following(or any other) function`s @decorator. Thanks to this you are able to easilly navigate between functions in your IDE.
 # MAGIC See bellow how to pass dataframe from one function to another.
 # MAGIC 
-# MAGIC ![Passing dataframe between functions](https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/df_passing.png)
+# MAGIC ![Passing dataframe between functions](https://github.com/richardcerny/bricksflow/raw/rc-bricksflow2.1/docs/img/df_passing.png)
 # MAGIC 
 # MAGIC You can see this in acion accross this notebook.
 

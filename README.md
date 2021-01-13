@@ -50,11 +50,11 @@ When the environment setup is completed, [configure your Databricks cluster conn
 
 Update *src/[ROOT_MODULE]/_config/config_dev.yaml* with your Databricks `address`, `clusterId` and `orgId` (Azure only).
 
-![](docs/config_dev.png)
+![](docs/img/config_dev.png)
 
 Add your Databricks token to the `[PROJECT_ROOT]/.env` file
 
-![](docs/dotenv.png)
+![](docs/img/dotenv.png)
 
 ## 4. Activate your project environment
 

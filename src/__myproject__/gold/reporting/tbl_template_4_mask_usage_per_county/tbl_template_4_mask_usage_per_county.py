@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/databricks_icon.png?raw=true" width=100/> 
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-bricksflow2.1/docs/img/databricks_icon.png?raw=true" width=100/>
 # MAGIC # Bricksflow example 4.
 # MAGIC 
 # MAGIC ## Productionalizing notebook in Bricksflow
@@ -50,13 +50,17 @@ def read_table_silver_covid_tbl_template_3_mask_usage(spark: SparkSession, table
         spark
             .read
             .table(tableNames.getByAlias('silver_covid.tbl_template_3_mask_usage'))
+            .limit(10) # only for test
       
             .withColumn('EXECUTE_DATE', F.to_date(F.col('EXECUTE_DATETIME')))
     )
 
 # COMMAND ----------
 
-# DBTITLE 1,How to join more dataframes using @transformation?
+# MAGIC %md ### How to join more dataframes using @transformation?
+
+# COMMAND ----------
+
 @transformation(read_bronze_covid_tbl_template_2_confirmed_case, read_table_silver_covid_tbl_template_3_mask_usage, display=True)
 def join_covid_datasets(df1: DataFrame, df2: DataFrame):
     return (
@@ -65,7 +69,7 @@ def join_covid_datasets(df1: DataFrame, df2: DataFrame):
 
 # COMMAND ----------
 
-@transformation(join_covid_datasets, display=True)
+@transformation(join_covid_datasets, display=False)
 def agg_avg_mask_usage_per_county(df: DataFrame):
     return (
         df

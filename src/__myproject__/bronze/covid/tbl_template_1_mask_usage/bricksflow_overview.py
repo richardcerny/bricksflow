@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/databricks_icon.png?raw=true" width=100/> 
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-bricksflow2.1/docs/img/databricks_icon.png?raw=true" width=100/>
 # MAGIC # Databricks
 # MAGIC 
 # MAGIC 
@@ -52,7 +52,7 @@
 # MAGIC - wrap transformations into functions
 # MAGIC - use @decorators
 # MAGIC 
-# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/dbx_vs_bricksflow.PNG?raw=true" width=1200/> 
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-bricksflow2.1/docs/img/dbx_vs_bricksflow.PNG?raw=true" width=1200/>
 
 # COMMAND ----------
 
@@ -60,10 +60,10 @@
 # MAGIC - define parameters & tables in single place
 # MAGIC - define schemas & create tables in advance
 # MAGIC 
-# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/datalake_config.png?raw=true" width=1200/> 
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-bricksflow2.1/docs/img/datalake_config.png?raw=true" width=1200/>
 # MAGIC 
 # MAGIC 
-# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/table_schema.png?raw=true" width=800/> 
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-bricksflow2.1/docs/img/table_schema.png?raw=true" width=800/>
 
 # COMMAND ----------
 
@@ -74,4 +74,4 @@
 # MAGIC 
 # MAGIC After your engineer set-it up you just run command `%run ../app/install_master_package` , The Master Package’s wheel gets installed to the notebook’s scope and you can start using Bricksflow functionality right away.
 # MAGIC 
-# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-template-notebooks/docs/bricksflow_base.png?raw=true" width=600/> 
+# MAGIC <img src="https://github.com/richardcerny/bricksflow/raw/rc-bricksflow2.1/docs/img/bricksflow_base.png?raw=true" width=600/>
